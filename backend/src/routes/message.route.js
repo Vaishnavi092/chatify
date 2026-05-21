@@ -7,8 +7,8 @@ const router=express.Router();
 router.use(arcjetProtection,protectRoute); // Apply authentication middleware to all message routes
 
 //middleware will run in order they are defined, so arcjetProtection will run first to check for bot activity, and if it passes, 
-// then protectRoute will check for authentication. This way we can prevent unnecessary
-//  authentication checks for bots and save server resources.
+//then protectRoute will check for authentication. This way we can prevent unnecessary
+//authentication checks for bots and save server resources.
 router.get("/contacts",getAllContacts)
 router.get("/chats",getChatPartners)
 router.get("/:id",getMessagesByUserId)
