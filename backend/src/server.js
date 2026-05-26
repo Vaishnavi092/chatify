@@ -12,7 +12,8 @@ const __dirname=path.resolve();
 
 const PORT=ENV.PORT||3000;
 //payload to large error fix
-app.use(express.json()); //middleware to parse incoming JSON data   (req.body)
+app.use(express.json({limit:"50mb"})); //middleware to parse incoming JSON data   (req.body)
+//app.use(express.urlencoded({limit:"50mb",extended:true}));
 app.use(cors({   
    origin:ENV.CLIENT_URL,
    credentials:true
