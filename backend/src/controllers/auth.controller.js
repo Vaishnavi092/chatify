@@ -97,21 +97,33 @@ export const logout=(_,res)=>{
 
 export const updateProfile=async(req,res)=>{
     try {
-        const profilePic=req.body;
+        const {profilePic}=req.body;
         if(!profilePic){
             return res.status(400).json({message:"Profile picture is required"});
         }
         const userId=req.user._id;
-        const uploadResponse= await cloudinary.uploader.upload(profilePic);
+        
+        console.log("Uploading image for user:", userId);
+        const uploadResponse= await cloudinary.uploader.upload(profilePic, {
+            resource_type: "auto",
+            folder: "chatify/profiles"
+        });
+        console.log("Image uploaded successfully:", uploadResponse.secure_url);
         
         const updatedUser= await User.findByIdAndUpdate(
             userId,
             {profilePic:uploadResponse.secure_url},
             {new:true}
         ).select("-password");
+        
+        console.log("User updated in DB:", updatedUser._id);
         res.status(200).json(updatedUser);
     } catch (error) {
-        console.error("Error updating profile:", error);
+        console.error("Error updating profile:", {
+            message: error.message,
+            stack: error.stack,
+            userId: req.user?._id
+        });
         res.status(500).json({message:"Server error"});
     }
 }
