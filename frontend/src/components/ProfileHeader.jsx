@@ -54,6 +54,7 @@ function ProfileHeader() {
             ref={fileInputRef} 
             onChange={handleImageUpload}
             disabled={isUpdatingProfile}
+            {...isUpdatingProfile && { disabled: true }}
             />
           </div>
           <div>
